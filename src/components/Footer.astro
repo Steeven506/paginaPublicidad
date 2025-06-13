@@ -1,0 +1,42 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-gray-800 text-white py-8 mt-8">
+  <div class="container mx-auto px-4 flex flex-wrap justify-between">
+    <div class="w-full md:w-1/3 lg:w-1/4 mb-6">
+      <h3 class="text-xl font-semibold mb-4 text-gray-100">Contacto</h3>
+      <p class="text-gray-300">Email: jsbotelloo@gmail.com</p>
+      <p class="text-gray-300">Teléfono: +57 3208398006</p>
+    </div>
+    
+    <div class="w-full md:w-1/3 lg:w-1/4 mb-6">
+      <h3 class="text-xl font-semibold mb-4 text-gray-100">Enlaces rápidos</h3>
+      <ul class="space-y-2">
+        <li><a href="/" class="text-gray-300 hover:text-white transition">Inicio</a></li>
+        <li><a href="/nosotros" class="text-gray-300 hover:text-white transition">Nosotros</a></li>
+        <li><a href="/catalogo" class="text-gray-300 hover:text-white transition">Catálogo</a></li>
+        <li><a href="/planes" class="text-gray-300 hover:text-white transition">Planes</a></li>
+      </ul>
+    </div>
+    
+    <div class="w-full md:w-1/3 lg:w-1/4 mb-6">
+      <h3 class="text-xl font-semibold mb-4 text-gray-100">Redes sociales</h3>
+      <div class="flex space-x-4">
+        <a href="#" class="text-white hover:text-blue-400 transition text-2xl" aria-label="Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="#" class="text-white hover:text-blue-400 transition text-2xl" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="text-white hover:text-pink-500 transition text-2xl" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="border-t border-gray-700 pt-4 mt-4 text-center text-gray-400">
+    <p>&copy; {currentYear} Publicidad Z. Todos los derechos reservados.</p>
+  </div>
+</footer>
