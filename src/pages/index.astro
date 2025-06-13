@@ -1,5 +1,44 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro"
 ---
 
-<Layout/>
+<Layout title="Inicio" description="Publicidad digital efectiva para tu negocio">
+  <section class="py-12 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Impulsa tu negocio con Publicidad Z</h1>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">Soluciones digitales personalizadas para alcanzar más clientes</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a 
+          href="/planes" 
+          class="px-6 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-gray-100 transition"
+        >
+          Ver planes
+        </a>
+        <button
+          @click="$dispatch('open-login')"
+          class="px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-blue-600 transition"
+        >
+          Acceso clientes
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Nuestros Servicios</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Tarjetas de servicios -->
+        {['Redes Sociales', 'Google Ads', 'Diseño Web'].map(service => (
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition">
+            <div class="text-blue-600 text-4xl mb-4">
+              <i class="fas fa-{service === 'Redes Sociales' ? 'hashtag' : service === 'Google Ads' ? 'ad' : 'globe'}"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">{service}</h3>
+            <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

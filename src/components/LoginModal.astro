@@ -1,0 +1,190 @@
+---
+const { id = 'login-modal' } = Astro.props;
+---
+
+<div 
+  id={id}
+  x-data="{ 
+    open: false,
+    formData: { email: '', password: '', remember: false },
+    error: '',
+    isLoading: false,
+    activeTab: 'login', // 'login' or 'register'
+    
+    close() { 
+      this.open = false;
+      this.error = '';
+    },
+    
+    async handleAuth() {
+      this.error = '';
+      this.isLoading = true;
+      
+      // Validaciones comunes
+      if (!this.formData.email || !this.formData.password) {
+        this.error = 'Por favor completa todos los campos';
+        this.isLoading = false;
+        return;
+      }
+      
+      if (!/^\S+@\S+\.\S+$/.test(this.formData.email)) {
+        this.error = 'Por favor ingresa un email válido';
+        this.isLoading = false;
+        return;
+      }
+      
+      // Simulación de API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Credenciales válidas (solo para desarrollo)
+      const validUsers = [
+        { email: 'admin@example.com', password: 'admin123', name: 'Administrador' },
+        { email: 'usuario@test.com', password: 'test123', name: 'Usuario Demo' }
+      ];
+      
+      if (this.activeTab === 'login') {
+        const user = validUsers.find(u => 
+          u.email === this.formData.email && 
+          u.password === this.formData.password
+        );
+        
+        if (user) {
+          window.dispatchEvent(new CustomEvent('login-success', { detail: user }));
+          this.close();
+        } else {
+          this.error = 'Credenciales incorrectas';
+        }
+      } else {
+        // Lógica de registro
+        this.error = 'Registro deshabilitado en demo';
+      }
+      
+      this.isLoading = false;
+    }
+  }"
+  x-show="open"
+  @keydown.escape.window="close()"
+  @open-login.window="open = true; activeTab = 'login'"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+  x-cloak
+>
+  <div 
+    class="bg-white rounded-lg shadow-xl w-full max-w-md relative animate-fade-in"
+    @click.outside="close()"
+  >
+    <button 
+      @click="close()"
+      class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
+      aria-label="Cerrar modal"
+    >
+      &times;
+    </button>
+    
+    <div class="p-6">
+      <div class="flex border-b mb-6">
+        <button
+          @click="activeTab = 'login'; error = ''"
+          class="px-4 py-2 font-medium"
+          :class="{
+            'text-blue-600 border-b-2 border-blue-600': activeTab === 'login',
+            'text-gray-500 hover:text-gray-700': activeTab !== 'login'
+          }"
+        >
+          Iniciar Sesión
+        </button>
+        <button
+          @click="activeTab = 'register'; error = ''"
+          class="px-4 py-2 font-medium"
+          :class="{
+            'text-blue-600 border-b-2 border-blue-600': activeTab === 'register',
+            'text-gray-500 hover:text-gray-700': activeTab !== 'register'
+          }"
+        >
+          Registrarse
+        </button>
+      </div>
+      
+      <template x-if="error">
+        <div class="mb-4 p-3 bg-red-50 text-red-600 rounded-md text-sm" x-text="error"></div>
+      </template>
+      
+      <form @submit.prevent="handleAuth" class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input
+            type="email"
+            id="email"
+            x-model="formData.email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="tu@email.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+        
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            x-model="formData.password"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+            minlength="6"
+          />
+        </div>
+        
+        <template x-if="activeTab === 'login'">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input 
+                id="remember" 
+                type="checkbox" 
+                x-model="formData.remember"
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 rounded"
+              >
+              <label for="remember" class="ml-2 text-sm text-gray-700">Recordar sesión</label>
+            </div>
+            <a href="#" class="text-sm text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
+          </div>
+        </template>
+        
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-200 flex items-center justify-center"
+          :disabled="isLoading"
+          :class="{ 'opacity-75 cursor-not-allowed': isLoading }"
+        >
+          <template x-if="isLoading">
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </template>
+          <span x-text="isLoading ? 'Procesando...' : (activeTab === 'login' ? 'Iniciar Sesión' : 'Registrarse')"></span>
+        </button>
+      </form>
+      
+      <div class="mt-4 text-center text-sm text-gray-500">
+        <template x-if="activeTab === 'login'">
+          <p>¿No tienes cuenta? <button @click="activeTab = 'register'" class="text-blue-600 hover:underline font-medium">Regístrate aquí</button></p>
+        </template>
+        <template x-if="activeTab === 'register'">
+          <p>¿Ya tienes cuenta? <button @click="activeTab = 'login'" class="text-blue-600 hover:underline font-medium">Inicia sesión</button></p>
+        </template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

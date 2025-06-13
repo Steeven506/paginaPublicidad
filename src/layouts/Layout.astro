@@ -1,55 +1,66 @@
 ---
 import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
-import Login from "../components/Login.astro";
+import Navbar from "../components/Navbar.astro";
+import LoginModal from "../components/LoginModal.astro";
+import Notification from "../components/Notification.astro";
 import "../styles/global.css";
 
 interface Props {
   title?: string;
+  description?: string;
 }
-const { title = 'Astro Basics' } = Astro.props;
+const { title = 'Publicidad Z', description = 'Soluciones de publicidad digital' } = Astro.props;
 ---
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{title} | Publicidad Z</title>
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    
-    <!-- Alpine.js -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <style is:global>
-      [x-cloak] { display: none !important; }
-    </style>
-  </head>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
+  <style is:global>
+    [x-cloak] { display: none !important; }
+    :root {
+      --color-primary: #2563eb;
+      --color-primary-hover: #1d4ed8;
+      --color-secondary: #6b7280;
+    }
+  </style>
+</head>
+
+<body 
+  x-data="{
+    auth: $persist({
+      isLoggedIn: false,
+      user: null
+    }).as('authState'),
+    notification: {
+      show: false,
+      message: '',
+      type: 'success'
+    },
+    showNotification(message, type = 'success') {
+      this.notification = { show: true, message, type };
+      setTimeout(() => this.notification.show = false, 5000);
+    }
+  }"
+  @login-success.window="auth.isLoggedIn = true; auth.user = $event.detail; showNotification(`Bienvenido ${$event.detail.name}`)"
+  @logout.window="auth.isLoggedIn = false; auth.user = null; showNotification('Sesión cerrada', 'info')"
+  class="min-h-screen flex flex-col bg-gray-50 font-sans antialiased"
+>
+  <Navbar />
   
-  <body class="min-h-screen flex flex-col bg-gray-50">
-    <Header/>
-    <button
-        @click="$dispatch('open-login')"
-        class="ml-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
-        x-data="{ tooltip: false }"
-        @mouseenter="tooltip = true"
-        @mouseleave="tooltip = false"
-      >
-        Iniciar Sesión
-        <span 
-          x-show="tooltip" 
-          x-transition
-          class="absolute z-10 mt-2 px-2 py-1 text-xs bg-gray-800 text-white rounded"
-        >
-          Acceder a tu cuenta
-        </span>
-      </button>
-    <main class="flex-grow container mx-auto px-4 py-8">
-      <slot />
-    </main>
-    
-    <Login />
-    
-    <Footer />
-  </body>
+  <main class="flex-grow">
+    <slot />
+  </main>
+
+  <Footer />
+  <LoginModal />
+  <Notification />
+</body>
 </html>
