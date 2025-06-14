@@ -1,5 +1,140 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+// Datos del catálogo (podrías obtenerlos de una API o CMS)
+const productos = [
+  {
+    id: 1,
+    nombre: "Publicidad en Redes Sociales",
+    descripcion: "Campañas estratégicas en Facebook, Instagram y LinkedIn para alcanzar a tu audiencia ideal.",
+    precio: "Desde $500/mes",
+    icono: "hashtag",
+    caracteristicas: ["Segmentación avanzada", "Creación de contenido", "Informes mensuales"],
+    destacado: true
+  },
+  {
+    id: 2,
+    nombre: "Google Ads",
+    descripcion: "Aparece en los primeros resultados de búsqueda cuando tus clientes te buscan.",
+    precio: "Desde $800/mes",
+    icono: "ad",
+    caracteristicas: ["Campañas Search y Display", "Optimización continua", "ROI medible"],
+    destacado: false
+  },
+  {
+    id: 3,
+    nombre: "Diseño Web Profesional",
+    descripcion: "Sitios web atractivos, rápidos y optimizados para conversiones.",
+    precio: "Desde $1,200",
+    icono: "globe",
+    caracteristicas: ["Diseño responsive", "SEO básico incluido", "Integración con redes"],
+    destacado: true
+  },
+  {
+    id: 4,
+    nombre: "Email Marketing",
+    descripcion: "Campañas de email que generan engagement y ventas recurrentes.",
+    precio: "Desde $300/mes",
+    icono: "envelope",
+    caracteristicas: ["Diseño de plantillas", "Automatizaciones", "Análisis de resultados"],
+    destacado: false
+  }
+];
 ---
 
-<Layout/>
+<Layout title="Catálogo de Servicios" description="Descubre nuestras soluciones de marketing digital">
+  <section class="py-12 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Nuestro Catálogo de Servicios</h1>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">Soluciones profesionales para cada necesidad de tu negocio</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+        <h2 class="text-3xl font-bold">Todos Nuestros Servicios</h2>
+        
+        <div class="mt-4 md:mt-0">
+          <label for="categoria" class="sr-only">Filtrar por categoría</label>
+          <select 
+            id="categoria" 
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="todos">Todos los servicios</option>
+            <option value="redes">Redes Sociales</option>
+            <option value="publicidad">Publicidad</option>
+            <option value="web">Diseño Web</option>
+            <option value="email">Email Marketing</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {productos.map(producto => (
+          <article 
+            class={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition ${producto.destacado ? 'border-l-4 border-blue-600' : ''}`}
+          >
+            {producto.destacado && (
+              <div class="bg-blue-600 text-white text-sm font-medium px-3 py-1 inline-block">
+                ¡Más popular!
+              </div>
+            )}
+            
+            <div class="p-6">
+              <div class="text-blue-600 text-4xl mb-4">
+                <i class={`fas fa-${producto.icono}`}></i>
+              </div>
+              
+              <h3 class="text-xl font-semibold mb-2">{producto.nombre}</h3>
+              <p class="text-gray-600 mb-4">{producto.descripcion}</p>
+              
+              <ul class="mb-6 space-y-2">
+                {producto.caracteristicas.map(caracteristica => (
+                  <li class="flex items-center">
+                    <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {caracteristica}
+                  </li>
+                ))}
+              </ul>
+              
+              <div class="flex items-center justify-between">
+                <span class="text-lg font-bold text-gray-900">{producto.precio}</span>
+                <button
+                  @click="$dispatch('open-contacto', { servicio: producto.nombre })"
+                  class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  Más información
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-6">¿No encuentras lo que necesitas?</h2>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">Contáctanos para una solución personalizada</p>
+      <button
+        @click="$dispatch('open-contacto')"
+        class="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
+      >
+        Solicitar presupuesto
+      </button>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  article:hover {
+    transform: translateY(-5px);
+  }
+  article {
+    transition: all 0.3s ease;
+  }
+</style>

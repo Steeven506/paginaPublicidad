@@ -1,0 +1,174 @@
+---
+// src/pages/nosotros.astro
+import Layout from "../layouts/Layout.astro";
+import TeamCard from "../components/TeamCard.astro";
+
+// Definición de tipos para el equipo
+type RedesSociales = {
+  linkedin?: string;
+  twitter?: string;
+  instagram?: string;
+  behance?: string;
+  dribbble?: string;
+};
+
+type MiembroEquipo = {
+  nombre: string;
+  puesto: string;
+  descripcion: string;
+  imagen: string;
+  redes: RedesSociales;
+};
+
+const equipo: MiembroEquipo[] = [
+  {
+    nombre: "Jhoan Botello",
+    puesto: "CEO & Fundadora",
+    descripcion: "Especialista en marketing digital con más de 10 años de experiencia.",
+    imagen: "",
+    redes: {
+      linkedin: "#",
+      twitter: "#"
+    }
+  },
+  {
+    nombre: "Steven Chachon",
+    puesto: "Director de Publicidad",
+    descripcion: "Experto en campañas de Google Ads y SEO con resultados comprobados.",
+    imagen: "",
+    redes: {
+      linkedin: "#",
+      instagram: "#"
+    }
+  }
+];
+
+const estadisticas = [
+  { valor: "200+", label: "Clientes satisfechos" },
+  { valor: "95%", label: "Tasa de retención" },
+  { valor: "10+", label: "Años de experiencia" },
+  { valor: "15", label: "Premios industriales" }
+];
+---
+
+<Layout title="Sobre Nosotros" description="Conoce al equipo detrás de Publicidad Z y nuestra pasión por el marketing digital">
+  <section class="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Nuestra Historia</h1>
+      <p class="text-xl mb-8 max-w-3xl mx-auto">Transformando ideas en resultados digitales desde 2013</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2">
+          <h2 class="text-3xl font-bold mb-6">Quiénes Somos</h2>
+          <p class="text-gray-600 mb-4">
+            En Publicidad Z nos apasiona ayudar a negocios como el tuyo a crecer mediante estrategias digitales efectivas. 
+            Fundada en 2013, comenzamos como un pequeño equipo y hoy somos una agencia reconocida a nivel nacional.
+          </p>
+          <p class="text-gray-600 mb-6">
+            Nuestra filosofía se basa en resultados medibles, transparencia absoluta y relaciones a largo plazo con 
+            nuestros clientes. No somos una fábrica de likes, somos constructores de negocios sostenibles.
+          </p>
+          <button
+            @click="$dispatch('open-contacto')"
+            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Habla con nuestro equipo
+          </button>
+        </div>
+        <div class="md:w-1/2">
+          <img 
+            src="/images/nosotros-office.jpg" 
+            alt="Nuestras oficinas" 
+            class="rounded-lg shadow-xl w-full h-auto"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Nuestros Logros</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        {estadisticas.map((item, index) => (
+          <div class="p-4">
+            <div class="text-4xl font-bold text-blue-600 mb-2">{item.valor}</div>
+            <p class="text-gray-600">{item.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-4">Conoce al Equipo</h2>
+      <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+        Expertos apasionados que trabajan detrás de escena para hacer crecer tu negocio
+      </p>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        {equipo.map((miembro, index) => (
+          <TeamCard key={index} miembro={miembro} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Nuestros Valores</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        {[
+          {
+            titulo: "Transparencia",
+            descripcion: "Reportes claros y honestidad en cada recomendación.",
+            icono: "fas fa-glasses"
+          },
+          {
+            titulo: "Innovación",
+            descripcion: "Siempre aprendiendo y adoptando las últimas tendencias.",
+            icono: "fas fa-lightbulb"
+          },
+          {
+            titulo: "Resultados",
+            descripcion: "Enfocados en métricas que realmente importan para tu negocio.",
+            icono: "fas fa-chart-line"
+          }
+        ].map((valor, index) => (
+          <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition">
+            <div class="text-blue-600 text-3xl mb-4">
+              <i class={valor.icono}></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">{valor.titulo}</h3>
+            <p class="text-gray-600">{valor.descripcion}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-blue-600 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-6">¿Listo para trabajar juntos?</h2>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">Cuéntanos sobre tu proyecto y crearemos una solución a medida</p>
+      <button
+        @click="$dispatch('open-contacto')"
+        class="px-8 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-gray-100 transition"
+      >
+        Contactar ahora
+      </button>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  .team-member:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+</style>

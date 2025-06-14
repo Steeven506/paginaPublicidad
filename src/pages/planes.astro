@@ -1,5 +1,152 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PlanCard from "../components/PlanCard.astro";
+
+type PlanColor = 'blue' | 'purple' | 'indigo';
+
+const planes: Array<{
+  nombre: string;
+  precio: string;
+  descripcion: string;
+  caracteristicas: string[];
+  destacado?: boolean;
+  color?: PlanColor;
+}> = [
+  {
+    nombre: "Básico",
+    precio: "$500/mes",
+    descripcion: "Ideal para emprendedores y pequeños negocios",
+    caracteristicas: [
+      "1 Red social",
+      "4 publicaciones/semana",
+      "Informe básico mensual",
+      "Soporte por email"
+    ],
+    destacado: false,
+    color: "blue" 
+  },
+  {
+    nombre: "Profesional",
+    precio: "$900/mes",
+    descripcion: "Perfecto para negocios en crecimiento",
+    caracteristicas: [
+      "3 Redes sociales",
+      "7 publicaciones/semana",
+      "Informe avanzado semanal",
+      "Soporte prioritario",
+      "1 campaña mensual"
+    ],
+    destacado: true,
+    color: "purple" 
+  },
+  {
+    nombre: "Empresarial",
+    precio: "$1,500/mes",
+    descripcion: "Solución completa para empresas",
+    caracteristicas: [
+      "5 Redes sociales",
+      "Publicaciones diarias",
+      "Informe detallado diario",
+      "Soporte 24/7",
+      "3 campañas mensuales",
+      "Gestión de crisis incluida"
+    ],
+    destacado: false,
+    color: "indigo" 
+  }
+];
 ---
 
-<Layout/>
+<Layout title="Nuestros Planes" description="Elige el paquete de publicidad digital que mejor se adapte a tu negocio">
+  <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Nuestros Planes</h1>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">Soluciones adaptables para cada etapa de tu negocio</p>
+      <div class="flex justify-center">
+        <div class="inline-flex rounded-md shadow-sm" role="group">
+          <button 
+            type="button" 
+            class="px-4 py-2 text-sm font-medium rounded-l-lg bg-white text-blue-600"
+          >
+            Mensual
+          </button>
+          <button 
+            type="button" 
+            class="px-4 py-2 text-sm font-medium border-t border-b border-white text-white hover:bg-blue-700"
+          >
+            Trimestral (10% dto.)
+          </button>
+          <button 
+            type="button" 
+            class="px-4 py-2 text-sm font-medium rounded-r-lg border border-white text-white hover:bg-blue-700"
+          >
+            Anual (20% dto.)
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">Elige tu plan ideal</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Todos nuestros planes incluyen estrategia personalizada y seguimiento de métricas clave.
+          <span class="block mt-2 text-blue-600">¡Sin contratos largos! Cancela cuando quieras.</span>
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 items-start">
+        {planes.map(plan => (
+          <PlanCard plan={plan} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Preguntas frecuentes</h2>
+      
+      <div class="max-w-3xl mx-auto space-y-4">
+        {[
+          {
+            pregunta: "¿Puedo cambiar de plan después?",
+            respuesta: "Sí, puedes cambiar de plan en cualquier momento sin coste adicional."
+          },
+          {
+            pregunta: "¿Hay costes ocultos?",
+            respuesta: "No, todos nuestros precios son transparentes e incluyen IVA."
+          },
+          {
+            pregunta: "¿Qué redes sociales manejan?",
+            respuesta: "Trabajamos con Facebook, Instagram, LinkedIn, Twitter y TikTok."
+          },
+          {
+            pregunta: "¿Ofrecen diseño gráfico?",
+            respuesta: "Sí, todos los planes incluyen diseño básico de publicaciones."
+          }
+        ].map(item => (
+          <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition">
+            <h3 class="font-medium text-lg mb-2">{item.pregunta}</h3>
+            <p class="text-gray-600">{item.respuesta}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-6">¿Necesitas algo personalizado?</h2>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">Contáctanos para un plan a medida de tus necesidades</p>
+      <button
+        @click="$dispatch('open-contacto')"
+        class="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
+      >
+        Solicitar presupuesto personalizado
+      </button>
+    </div>
+  </section>
+</Layout>

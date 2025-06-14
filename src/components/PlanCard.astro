@@ -1,0 +1,74 @@
+---
+type PlanColor = 'blue' | 'purple' | 'indigo';
+
+export interface Props {
+  plan: {
+    nombre: string;
+    precio: string;
+    descripcion: string;
+    caracteristicas: string[];
+    destacado?: boolean;
+    color?: PlanColor;
+  };
+}
+
+const { plan } = Astro.props;
+
+const colorClasses: Record<PlanColor, string> = {
+  blue: 'bg-blue-600',
+  purple: 'bg-purple-600',
+  indigo: 'bg-indigo-600',
+};
+
+const colorPlan = plan.color || 'blue';
+---
+
+<article class={`relative rounded-xl shadow-lg overflow-hidden ${
+  plan.destacado ? 'ring-2 ring-blue-500 transform md:-translate-y-4' : ''
+}`}>
+  {plan.destacado && (
+    <div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+      RECOMENDADO
+    </div>
+  )}
+  
+  <div class={`${colorClasses[colorPlan]} p-6 text-white text-center`}>
+    <h3 class="text-2xl font-bold mb-1">{plan.nombre}</h3>
+    <p class="mb-4">{plan.descripcion}</p>
+    <div class="text-4xl font-bold mb-2">{plan.precio}</div>
+    <p class="text-sm opacity-80">Facturación mensual</p>
+  </div>
+  
+  <div class="bg-white p-6">
+    <ul class="space-y-3 mb-8">
+      {plan.caracteristicas.map(item => (
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+    
+    <button
+      @click="$dispatch('open-contacto', { plan: plan.nombre })"
+      class={`w-full py-3 px-4 rounded-lg font-medium ${
+        plan.destacado 
+          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+          : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+      } transition`}
+    >
+      {plan.destacado ? 'Contratar ahora' : 'Más información'}
+    </button>
+  </div>
+</article>
+
+<style>
+  article {
+    transition: all 0.3s ease;
+  }
+  article:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+</style>
